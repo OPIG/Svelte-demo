@@ -5,9 +5,20 @@
 
   let dispatch = createEventDispatcher()
 
+    // 删除
   const delItem = (id)=>{
     console.log(id);
     dispatch('del',id)
+  }
+
+  // 编辑
+  const updateItem = (id) => {
+    console.log(ItemArr.filter(item => item.id === id));
+    const item = ItemArr.filter(item => item.id === id)
+    item[0].name = 'this is been edit'
+    console.log(item);
+
+    dispatch('update', item)
   }
 </script>
 
@@ -21,16 +32,18 @@
     </li>
   </ul>
   <ul>
-    {#each ItemArr as item,index }
+    {#each ItemArr as item,index (index)}
       <li>
         <span class='item-list sort-num'>{item.id}</span>
         <span class="item-list item-list-name">{item.name}</span>
         <span class="item-list item-list-age">{item.age}</span>
         <div class='item-list item-list-operation'>
-          <button class="btn primary">Edit</button>
+          <button class="btn primary" on:click={updateItem(item.id)}>Edit</button>
           <button class="btn primary" on:click={delItem(item)}>Delete</button>
         </div>
       </li>
+      {:else}
+      <li>no data</li>
     {/each}
   </ul>
 </section>

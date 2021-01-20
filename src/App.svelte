@@ -1,6 +1,8 @@
 <script>
   import Input from './components/Input.svelte'
   import ItemList from './components/ItemList.svelte'
+  import Dialog from './components/Dialog.svelte'
+  import Form from './components/form.svelte'
 
   let ItemArr = [
     {
@@ -14,7 +16,6 @@
       age: 20
     }
   ]
- $: t = [0,1]
 
   let inputVal = 'test'
 
@@ -29,17 +30,47 @@
   }
 
   const del = (item) => {
-    ItemArr= ItemArr.filter(e=>
-      e.id != item.detail.id
-    )
+    toggleShowDialog()
+    // ItemArr= ItemArr.filter(e=>
+    //   e.id != item.detail.id
+    // )
   }
+
+  const toggleShowDialog = () => {
+    showDialog = !showDialog
+  }
+
+  const changeInputVal = (val) => {
+    // todo
+    inputVal = val.detail
+  }
+
+  const update = (item) => {
+    const newArr = ItemArr.map(el=>{
+      if(el.id === item.detail[0].id) {
+        el = item.detail[0]
+      }
+      return el
+    })
+
+    console.log(newArr);
+   ItemArr = [ ...newArr]
+  }
+
+  let showDialog = false
 </script>
 
 <main>
   <h1>To Do List</h1>
+  <input type="text" bind:value={inputVal}>
   inputValue: {inputVal}
-  <Input bind:value={inputVal} on:click={addItem(inputVal)}/>
-  <ItemList {ItemArr} on:del={del}></ItemList>
+  <Input {inputVal} on:changeInputVal={changeInputVal} on:click={addItem(inputVal)}/>
+  <ItemList {ItemArr} on:del={del} on:update={update}></ItemList>
+  <Dialog {showDialog} on:click={toggleShowDialog}>
+    <div slot='slot-name'>
+      <Form/>
+    </div>
+  </Dialog>
 </main>
 
 <style>

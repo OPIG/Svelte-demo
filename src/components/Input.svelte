@@ -1,13 +1,19 @@
 <script>
   import {createEventDispatcher} from 'svelte'
 
+  const dispatch = createEventDispatcher()
+
+  const inputChange = () => {
+    dispatch('changeInputVal', inputVal)
+  }
+
   export let inputVal = ''
 
   
 </script>
 
 <section class="input-wrapper">
-  <input type="text" bind:value = {inputVal} placeholder='input anything'>
+  <input type="text" bind:value = {inputVal}  on:change = {inputChange} placeholder='input anything'>
   <button class="addItem primary" on:click>Add Item</button>
 </section>
 <span>{inputVal}</span>
