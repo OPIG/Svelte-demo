@@ -1,96 +1,63 @@
 <script>
-  import Input from './components/Input.svelte'
-  import ItemList from './components/ItemList.svelte'
-  import Dialog from './components/Dialog.svelte'
-  import Form from './components/form.svelte'
+  import Nav from './shared/nav.svelte'
+  import Foot from './shared/foot.svelte'
+  import VoteList from './components/VoteList/voteList.svelte'
 
-  let ItemArr = [
+  let data = [
     {
-      id: 1,
-      name: 'zhangsan',
-      age: 10
+      id: 0,
+      question: 'this is a demo question',
+      answerA: 'Answer A',
+      answerB: 'Answer B',
+      voteA: 0,
+      voteB: 0,
     },
     {
-      id: 2,
-      name: 'lisi',
-      age: 20
+      id: 1,
+      question: 'this is a question',
+      answerA: 'Answer A',
+      answerB: 'Answer B',
+      voteA: 10,
+      voteB: 0,
     }
-  ]
+]
 
-  let inputVal = 'test'
-
-  const addItem = (item) => {
-    let items = {
-      id: ItemArr.length + 1,
-      name: inputVal,
-      age: Math.ceil(Math.random()*100)
+  const handelUpdateVote = (e) => {
+    const {id, option} = e.detail
+    const copyData = [...data]
+    const findData = copyData.find((item) => item.id === id)
+    if(option === 'a') {
+      findData.voteA++
+    } else if (option === 'b') {
+      findData.voteB++
     }
-    ItemArr = [...ItemArr, items]
-    // ItemArr[ItemArr.length]=items
+
+    data = copyData
+
   }
-
-  const del = (item) => {
-    toggleShowDialog()
-    // ItemArr= ItemArr.filter(e=>
-    //   e.id != item.detail.id
-    // )
-  }
-
-  const toggleShowDialog = () => {
-    showDialog = !showDialog
-  }
-
-  const changeInputVal = (val) => {
-    // todo
-    inputVal = val.detail
-  }
-
-  const update = (item) => {
-    const newArr = ItemArr.map(el=>{
-      if(el.id === item.detail[0].id) {
-        el = item.detail[0]
-      }
-      return el
-    })
-
-    console.log(newArr);
-   ItemArr = [ ...newArr]
-  }
-
-  let showDialog = false
 </script>
 
 <main>
-  <h1>To Do List</h1>
-  <input type="text" bind:value={inputVal}>
-  inputValue: {inputVal}
-  <Input {inputVal} on:changeInputVal={changeInputVal} on:click={addItem(inputVal)}/>
-  <ItemList {ItemArr} on:del={del} on:update={update}></ItemList>
-  <Dialog {showDialog} on:click={toggleShowDialog}>
-    <div slot='slot-name'>
-      <Form/>
-    </div>
-  </Dialog>
+  <Nav></Nav>
+  <section class="content">
+    <VoteList {data} on:updateVote={handelUpdateVote}></VoteList>
+  </section>
+  <Foot></Foot>
 </main>
 
 <style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
+  main{
+    /* display: flex;
+    flex-direction: column;
+    align-items: space-between;
+    width: 100%;
+    height: 100%;
+    min-height: 800px; */
+  }
 
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
+  .content {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+  }
 </style>
