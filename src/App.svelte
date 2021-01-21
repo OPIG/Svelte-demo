@@ -2,6 +2,8 @@
   import Nav from './shared/nav.svelte'
   import Foot from './shared/foot.svelte'
   import VoteList from './components/VoteList/voteList.svelte'
+  import Tab from './shared/tabs.svelte'
+  import AddVoteItem from './components/VoteList/addVoteItem.svelte'
 
   let data = [
     {
@@ -22,6 +24,12 @@
     }
 ]
 
+  const navItems = ['Show Items', 'Add Item']
+  let currentNav = navItems[0]
+  const hancelNavClick = (e) => {
+   currentNav = e.detail
+  }
+
   const handelUpdateVote = (e) => {
     const {id, option} = e.detail
     const copyData = [...data]
@@ -35,26 +43,37 @@
     data = copyData
 
   }
+
+  const addItem = (e) => {
+    const newData = e.detail
+    console.log(newData);
+    data = [newData, ...data]
+    currentNav =  navItems[0]
+  }
+
+  const delItem = (e) => {
+    const copyData = [...data]
+    let newData = copyData.filter(item => item.id !== e.detail)
+    data = newData
+
+  }
 </script>
 
 <main>
   <Nav></Nav>
   <section class="content">
-    <VoteList {data} on:updateVote={handelUpdateVote}></VoteList>
+    <Tab {navItems} {currentNav} on:clickNav={hancelNavClick}></Tab>
+    {#if currentNav === navItems[0]}
+      <VoteList {data} on:updateVote={handelUpdateVote} on:handelDel={delItem}></VoteList>
+    {:else if currentNav == navItems[1]}
+      <AddVoteItem on:handelSubmit={addItem}/>
+    {/if}
+    
   </section>
   <Foot></Foot>
 </main>
 
 <style>
-  main{
-    /* display: flex;
-    flex-direction: column;
-    align-items: space-between;
-    width: 100%;
-    height: 100%;
-    min-height: 800px; */
-  }
-
   .content {
     display: flex;
     flex-flow: row wrap;

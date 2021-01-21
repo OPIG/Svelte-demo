@@ -10,6 +10,7 @@
 
 <style>
   footer{
+    margin-top: 80px;
     text-align: center;
   }
 </style>

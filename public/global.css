@@ -14,7 +14,8 @@ body {
 
 a {
 	color: rgb(0,100,200);
-	text-decoration: none;
+  text-decoration: none;
+  outline: none;
 }
 
 a:hover {
@@ -29,6 +30,12 @@ label {
 	display: block;
 }
 
+ul, li {
+  margin: 0px;
+  padding: 0px;
+  list-style: none;
+}
+
 input, button, select, textarea {
 	font-family: inherit;
 	font-size: inherit;
@@ -37,7 +44,8 @@ input, button, select, textarea {
 	margin: 0 0 0.5em 0;
 	box-sizing: border-box;
 	border: 1px solid #ccc;
-	border-radius: 2px;
+  border-radius: 2px;
+  outline: none;
 }
 
 input:disabled {
