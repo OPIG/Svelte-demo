@@ -7,7 +7,7 @@ git checkout master || exit
 
 for ((;;))
 do
-	echo -n  -e '\033[31m are you sure you want to pull and release origin/master? (y/n) \033[0m'
+	echo -n  -e '\033[31m Are you sure you want to pull and release origin/master? (y/n) \033[0m'
 	read result
 	if [[ "$result" == [yY] ]]
 	then
@@ -24,39 +24,39 @@ done
 echo -e '\033[32m 2. =====>pulling from origin/master \033[0m'
 git pull origin master || exit
 
-
-# if it's the first time to create gh-pages branch, uncomment below
-# echo -e '\033[32m 3. =====>checkout to gh-pages branch \033[0m'
-# git checkout -b gh-pages
-
-# if the gh-pages branch already exist, use this one
-git checkout gh-pages || exit
-
-
-echo -e '\033[32m 4. =====>install modules \033[0m'
+echo -e '\033[32m 3. =====>install modules \033[0m'
 npm i || exit 
 
-echo -e '\033[32m  build file \033[0m'
+echo -e '\033[32m  4. =====>build file \033[0m'
 npm run build
 
-echo -e '\033[32m copy public folder to temp folder  \033[0m'
+# delete local gh-pages branch
+echo -e '\033[32m 5. =====>delete local gh-pages branch \033[0m'
+git branch -D gh-pages
+
+echo -e '\033[32m 6. =====>checkout to gh-pages branch \033[0m'
+git checkout -b gh-pages
+
+echo -e '\033[32m 7. =====>copy public folder to temp folder  \033[0m'
 cp -r public/ /tmp/
 
-echo -e '\033[32m remove all the files \033[0m'
+echo -e '\033[32m 8. =====>remove all the files \033[0m'
 rm -r ./*
 
 # make gh-pages only have pulbic folder
-echo -e '\033[32m paste tmp folder to public folder  \033[0m'
+echo -e '\033[32m 9. =====>paste tmp folder to public folder  \033[0m'
 cp -r /tmp/public/* ./
 
-echo -e '\033[32m git add current folder \033[0m'
+echo -e '\033[32m 10. =====>git add current folder \033[0m'
 git add -A
 
-echo -e '\033[32m commit to remote branch'
+echo -e '\033[32m 11. =====>commit to remote branch'
 git commit -m 'deploy to gh-pages branch :tada: :rocket:'
 
-echo -e '\033[32m pushing to gh-pages branch \033[0m'
+echo -e '\033[32m 12. =====>pushing to gh-pages branch \033[0m'
 git push --force origin gh-pages 
+
+echo -e '\033[32m 13. =====success===> \033[0m'
 
 
 
