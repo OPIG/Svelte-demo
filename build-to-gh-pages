@@ -25,15 +25,19 @@ echo -e '\033[32m 2. =====>pulling from origin/master \033[0m'
 git pull origin master || exit
 
 
-echo -e '\033[32m 3. =====>checkout to gh-pages branch \033[0m'
-git checkout -b gh-pages
+# if it's the first time to create gh-pages branch, uncomment below
+# echo -e '\033[32m 3. =====>checkout to gh-pages branch \033[0m'
+# git checkout -b gh-pages
 
-# incase gh-pages branch already exist
+# if the gh-pages branch already exist, use this one
 git checkout gh-pages || exit
 
 
 echo -e '\033[32m 4. =====>install modules \033[0m'
 npm i || exit 
+
+echo -e '\033[32m  build file \033[0m'
+npm run build
 
 echo -e '\033[32m copy public folder to temp folder  \033[0m'
 cp -r public/ /tmp/
@@ -49,10 +53,10 @@ echo -e '\033[32m git add current folder \033[0m'
 git add -A
 
 echo -e '\033[32m commit to remote branch'
-git commit -m 'prepare for deploy gh-pages branch'
+git commit -m 'deploy to gh-pages branch :tada: :rocket:'
 
 echo -e '\033[32m pushing to gh-pages branch \033[0m'
-git push origin gh-pages
+git push --force origin gh-pages 
 
 
 
